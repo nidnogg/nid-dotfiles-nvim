@@ -148,7 +148,7 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup({
+require('lazy').setup {
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -905,7 +905,13 @@ require('lazy').setup({
     ---@module "neo-tree"
     ---@type neotree.Config?
     opts = {
-      -- fill any relevant options here
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = true,
+        },
+      },
     },
   },
   -- git utils
@@ -924,7 +930,6 @@ require('lazy').setup({
     },
   },
   -- { 'akinsho/git-conflict.nvim', version = '*', config = true },
-
   {
     'nvim-treesitter/nvim-treesitter-context',
     opts = {
@@ -944,7 +949,73 @@ require('lazy').setup({
       easing = 'quadratic',
     },
   },
-}, {
+  -- ai utils
+  -- {
+  --   "ravitemer/mcphub.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "olimorris/codecompanion.nvim"
+  --   },
+  --   build = "npm install -g mcp-hub@latest",
+  --   config = function()
+  --     require("mcphub").setup({
+  --       port = 3000,
+  --       config = vim.fn.expand("~/mcpservers.json"),
+  --     })
+  --   end
+  -- },
+  {
+    'joshuavial/aider.nvim',
+    opts = {
+      -- if you don't want to use the default settings
+      auto_manage_context = true, -- automatically manage buffer context
+      default_bindings = true, -- use default <leader>A keybindings
+      debug = false, -- enable debug logging
+    },
+  },
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   config = function()
+  --     require("codecompanion").setup({
+  --       strategies = {
+  --           chat = {
+  --                 tools = {
+  --                       ["mcp"] = {
+  --                           callback = require("mcphub.extensions.codecompanion"),
+  --                           description = "Call tools and resources from the MCP Servers",
+  --                           opts = {
+  --                               requires_approval = true
+  --                           }
+  --                       }
+  --                   }
+  --               }
+  --       },
+  --       opts = {
+  --         log_level = "DEBUG", -- or "TRACE"
+  --       }
+  --     })
+  --   end,
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  -- },
+  -- misc utils
+  { 'sindrets/diffview.nvim', opts = {} },
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    opts = {
+      options = {
+        mode = 'buffers',
+        diagnostics = 'nvim_lsp',
+        separator_style = 'thin',
+        show_buffer_close_icons = true,
+        show_close_icon = false,
+      },
+    },
+  },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
@@ -964,9 +1035,15 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
-})
+}
 
 -- colorizer setup
-require'colorizer'.setup()
+require('colorizer').setup()
+-- alt up and alt down from vscode
+vim.keymap.set('n', '<A-k>', ':m-2<CR>==', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-j>', ':m+1<CR>==', { noremap = true, silent = true })
+
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
