@@ -193,6 +193,9 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '[c', function()
+  require('treesitter-context').go_to_context(vim.v.count1)
+end, { silent = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -990,13 +993,14 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 
   -- nid config start go
+  -- tree utils
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-      "MunifTanjim/nui.nvim",
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
+      'MunifTanjim/nui.nvim',
       -- {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
     },
     lazy = false, -- neo-tree will lazily load itself
@@ -1006,6 +1010,7 @@ require('lazy').setup({
       -- fill any relevant options here
     },
   },
+  -- git configs
   {
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -1013,9 +1018,26 @@ require('lazy').setup({
       sign_priority = 15, -- higher than diagnostic,todo signs. lower than dapui breakpoint sign
     },
   },
-  {'akinsho/git-conflict.nvim', version = "*", config = true},
+  { 'akinsho/git-conflict.nvim', version = '*', config = true },
 
-  
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    opts = {
+      enable = true, -- Enable this plugin
+      max_lines = 5, -- Limit the number of context lines
+      trim_scope = 'outer', -- Discard outer context lines when max_lines is exceeded
+      mode = 'cursor', -- Use cursor position to determine context
+      line_numbers = true, -- Show line numbers in the context window
+    },
+  },
+  -- qol pretty utils
+ {
+      'karb94/neoscroll.nvim',
+      opts = {
+        duration_multiplier = 0.7, -- Global duration multiplier
+        easing = 'quadratic',
+      },
+    },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
