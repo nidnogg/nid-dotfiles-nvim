@@ -74,6 +74,9 @@ vim.opt.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.opt.confirm = true
+--
+-- Always keep current dir as context
+vim.opt.autochdir = true
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
