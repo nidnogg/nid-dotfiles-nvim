@@ -304,17 +304,18 @@ require('lazy').setup {
 
       -- nid here vanilla telescope key mappings
       -- Key mappings
-      local cwd = vim.fn.getcwd()
       vim.keymap.set('n', '<leader>ff', function()
+        local current_dir = vim.fn.expand '%:p:h'
         require('telescope.builtin').find_files {
-          cwd = cwd,
-          search_dirs = { cwd },
+          cwd = current_dir,
+          search_dirs = { current_dir },
         }
       end, { desc = 'Find Files' })
       vim.keymap.set('n', '<leader>fg', function()
+        local current_dir = vim.fn.expand '%:p:h'
         require('telescope.builtin').live_grep {
-          cwd = cwd,
-          search_dirs = { cwd },
+          cwd = current_dir,
+          search_dirs = { current_dir },
         }
       end, { desc = 'Live Grep in Current Directory' })
       vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, { desc = 'Buffers' })
